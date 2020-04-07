@@ -15,6 +15,11 @@ public class Client {
         this.name = name;
     }
 
+    public Client(Object id, Object name) {
+        this.id = (Integer) id;
+        this.name = (String) name;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -43,5 +48,13 @@ public class Client {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
