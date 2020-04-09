@@ -2,55 +2,56 @@ package io.github.marcoscouto.domain.repository;
 
 import io.github.marcoscouto.domain.entity.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class ClientRepository {
 
-    private static String INSERT = "INSERT INTO TB_CLIENT (NAME) VALUES (?)";
-    private static String UPDATE = "UPDATE TB_CLIENT SET NAME = ? WHERE ID = ?";
-    private static String FIND_ALL = "SELECT * FROM TB_CLIENT";
-    private static String FIND_BY_ID = "SELECT * FROM TB_CLIENT WHERE ID = ";
-    private static String DELETE = "DELETE FROM TB_CLIENT WHERE ID = ?";
-
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private EntityManager entityManager;
 
+    @Transactional
     public Client save(Client client) {
-        jdbcTemplate.update(INSERT, new Object[]{client.getName()});
+        entityManager.persist(client);
         return client;
     }
 
+    @Transactional
     public Client update(Client client) {
-        jdbcTemplate.update(UPDATE, new Object[]{client.getName(), client.getId()});
+        entityManager.merge(client);
         return client;
     }
 
+    @Transactional(readOnly = true)
     public List<Client> findAll() {
-        return jdbcTemplate.query(FIND_ALL, (resultSet, i) -> new Client(
-                resultSet.getInt("id"),
-                resultSet.getString("name")));
+        return entityManager.createQuery("from Client", Client.class).getResultList();
     }
 
+    @Transactional(readOnly = true)
     public List<Client> findById(Integer id) {
-        return jdbcTemplate.query(FIND_BY_ID.concat(id.toString()), (resultSet, i) -> new Client(
-                resultSet.getInt("id"),
-                resultSet.getString("name")));
+        String jpql = "select c from Client c where c.id = :id";
+        final TypedQuery<Client> query = entityManager.createQuery(jpql, Client.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
-    public void delete(Integer id) {
-        jdbcTemplate.update(DELETE, new Object[]{id});
+    @Transactional(readOnly = true)
+    public List<Client> findByName(String name) {
+        String jpql = "select c from Client c where c.nome like :nome";
+        final TypedQuery<Client> query = entityManager.createQuery(jpql, Client.class);
+        query.setParameter("name", "%" + name + "%");
+        return query.getResultList();
     }
-    public void delete(Client client) {
-        jdbcTemplate.update(DELETE, new Object[]{client.getId()});
+
+    @Transactional
+    public void delete(Integer id) {
+        Client client = entityManager.find(Client.class, id);
+        if (entityManager.contains(client)) entityManager.remove(client);
     }
 
 }

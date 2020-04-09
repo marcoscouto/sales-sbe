@@ -1,10 +1,17 @@
 package io.github.marcoscouto.domain.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_client")
 public class Client {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "name", length = 100)
     private String name;
 
     public Client() {
