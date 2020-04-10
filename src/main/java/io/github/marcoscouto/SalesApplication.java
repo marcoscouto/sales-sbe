@@ -22,11 +22,13 @@ public class SalesApplication {
             Client client2 = new Client(null, "João");
             clientRepository.save(client1);
             clientRepository.save(client2);
-            client2 = clientRepository.findById(2).get(0);
+            client2 = clientRepository.findById(2).get();
             client2.setName("Gerard");
-            clientRepository.update(client2);
-            clientRepository.delete(1);
+            clientRepository.save(client2);
+            clientRepository.deleteById(1);
             clientRepository.findAll().forEach(System.out::println);
+
+            System.out.println(clientRepository.findByNameLike("Gerard"));
         };
     }
 
