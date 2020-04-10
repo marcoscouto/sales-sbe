@@ -68,9 +68,12 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        final StringBuffer sb = new StringBuffer("Client{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", orders=");
+        orders.forEach(sb::append);
+        sb.append('}');
+        return sb.toString();
     }
 }

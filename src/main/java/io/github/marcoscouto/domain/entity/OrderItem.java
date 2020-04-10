@@ -2,7 +2,6 @@ package io.github.marcoscouto.domain.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "tb_order_item")
@@ -16,13 +15,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToMany
-    @JoinTable(
-            name = "orderItem_products",
-            joinColumns = @JoinColumn(name = "order_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Set<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private Integer quantity;
 
@@ -32,6 +27,7 @@ public class OrderItem {
     public OrderItem(Integer id, Order order, Product product, Integer quantity) {
         this.id = id;
         this.order = order;
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -59,8 +55,12 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -76,5 +76,16 @@ public class OrderItem {
     @Override
     public int hashCode() {
         return Objects.hash(id, order, quantity);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("OrderItem{");
+        sb.append("id=").append(id);
+        sb.append(", order=").append(order);
+        sb.append(", product=").append(product);
+        sb.append(", quantity=").append(quantity);
+        sb.append('}');
+        return sb.toString();
     }
 }

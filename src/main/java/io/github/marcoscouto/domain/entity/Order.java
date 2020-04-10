@@ -3,6 +3,7 @@ package io.github.marcoscouto.domain.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,9 +20,11 @@ public class Order {
     private Client client;
 
     @OneToMany(mappedBy = "order")
-    private Set<OrderItem> orderItem;
+    private Set<OrderItem> orderItem = new HashSet<>();
 
     private LocalDate orderDate;
+
+    @Column(scale = 2)
     private BigDecimal total;
 
     public Order() {
@@ -66,6 +69,10 @@ public class Order {
         this.total = total;
     }
 
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,5 +87,15 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id, client, orderDate, total);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Order{");
+        sb.append("id=").append(id);
+        sb.append(", orderDate=").append(orderDate);
+        sb.append(", total=").append(total);
+        sb.append('}');
+        return sb.toString();
     }
 }

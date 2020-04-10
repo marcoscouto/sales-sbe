@@ -14,6 +14,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String description;
+
+    @Column(scale = 2)
     private BigDecimal price;
 
     public Product() {
@@ -62,5 +64,15 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id, description, price);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Product{");
+        sb.append("id=").append(id);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", price=").append(price);
+        sb.append('}');
+        return sb.toString();
     }
 }
