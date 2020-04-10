@@ -11,4 +11,10 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 
     List<Client> findByNameLike(String name);
 
+    List<Client> findByNameOrIdOrderById(String name, Integer id);
+
+    Client findOneByName(String name);
+
+    boolean existsByName(String name);
+
 }
