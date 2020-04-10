@@ -28,7 +28,7 @@ public class SalesApplication {
             clientRepository.deleteById(1);
             clientRepository.findAll().forEach(System.out::println);
 
-            System.out.println(clientRepository.existsByName("Gerard"));
+            System.out.println(clientRepository.customNativeSQLFindByName("Gera"));
         };
     }
 
