@@ -1,7 +1,9 @@
 package io.github.marcoscouto.domain.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_client")
@@ -13,6 +15,9 @@ public class Client {
 
     @Column(name = "name", length = 100)
     private String name;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Order> orders = new HashSet<>();
 
     public Client() {
     }
@@ -41,6 +46,10 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
     @Override

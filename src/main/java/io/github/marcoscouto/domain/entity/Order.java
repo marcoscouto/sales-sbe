@@ -1,13 +1,26 @@
 package io.github.marcoscouto.domain.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "tb_order")
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
+
+    @OneToMany(mappedBy = "order")
+    private Set<OrderItem> orderItem;
+
     private LocalDate orderDate;
     private BigDecimal total;
 

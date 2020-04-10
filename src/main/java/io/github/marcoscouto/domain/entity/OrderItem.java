@@ -1,12 +1,29 @@
 package io.github.marcoscouto.domain.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "tb_order_item")
 public class OrderItem {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
-    private Product product;
+
+    @ManyToMany
+    @JoinTable(
+            name = "orderItem_products",
+            joinColumns = @JoinColumn(name = "order_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
+
     private Integer quantity;
 
     public OrderItem() {
@@ -15,7 +32,6 @@ public class OrderItem {
     public OrderItem(Integer id, Order order, Product product, Integer quantity) {
         this.id = id;
         this.order = order;
-        this.product = product;
         this.quantity = quantity;
     }
 
@@ -35,20 +51,16 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
     @Override
@@ -58,12 +70,11 @@ public class OrderItem {
         OrderItem orderItem = (OrderItem) o;
         return Objects.equals(id, orderItem.id) &&
                 Objects.equals(order, orderItem.order) &&
-                Objects.equals(product, orderItem.product) &&
                 Objects.equals(quantity, orderItem.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, order, product, quantity);
+        return Objects.hash(id, order, quantity);
     }
 }
