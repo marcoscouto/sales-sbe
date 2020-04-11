@@ -1,5 +1,7 @@
 package io.github.marcoscouto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,6 +18,7 @@ public class Client {
     @Column(name = "name", length = 100)
     private String name;
 
+    @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client")
     private Set<Order> orders = new HashSet<>();
 

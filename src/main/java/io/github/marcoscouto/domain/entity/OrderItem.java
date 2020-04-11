@@ -1,5 +1,7 @@
 package io.github.marcoscouto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -11,10 +13,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnoreProperties("order")
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @JsonIgnoreProperties("product")
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

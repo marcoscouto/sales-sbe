@@ -1,5 +1,7 @@
 package io.github.marcoscouto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,10 +17,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnoreProperties("client")
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @JsonIgnoreProperties("order")
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItem = new HashSet<>();
 
