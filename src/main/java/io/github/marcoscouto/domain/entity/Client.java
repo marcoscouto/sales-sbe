@@ -1,8 +1,10 @@
 package io.github.marcoscouto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,9 +18,11 @@ public class Client {
     private Integer id;
 
     @Column(name = "name", length = 100)
+    @NotNull
     private String name;
 
-    @JsonIgnoreProperties("client")
+//    @JsonIgnoreProperties("client")
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private Set<Order> orders = new HashSet<>();
 
