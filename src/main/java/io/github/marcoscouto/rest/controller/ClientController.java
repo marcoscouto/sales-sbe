@@ -3,12 +3,15 @@ package io.github.marcoscouto.rest.controller;
 import io.github.marcoscouto.domain.entity.Client;
 import io.github.marcoscouto.domain.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,7 +24,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity<Client> findById(@PathVariable Integer id) {
         Optional<Client> client = clientRepository.findById(id);
-        if (!client.isPresent()) ResponseEntity.notFound().build();
+        if (!client.isPresent()) return ResponseEntity.notFound().build();
         HttpHeaders hh = new HttpHeaders();
         hh.set("Authorization", "token");
         ResponseEntity<Client> responseEntity = new ResponseEntity<Client>(client.get(), hh, HttpStatus.OK);
@@ -52,6 +55,19 @@ public class ClientController {
                     clientRepository.save(client);
                     return ResponseEntity.ok(client);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Client>> findByProperties(Client data){
+        ExampleMatcher exampleMatcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example example = Example.of(data, exampleMatcher);
+        List<Client> clientList = clientRepository.findAll(example);
+
+        return ResponseEntity.ok(clientList);
     }
 
 

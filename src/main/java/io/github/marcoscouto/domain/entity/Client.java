@@ -21,6 +21,8 @@ public class Client {
     @NotNull
     private String name;
 
+    private String cpf;
+
 //    @JsonIgnoreProperties("client")
     @JsonIgnore
     @OneToMany(mappedBy = "client")
@@ -29,9 +31,10 @@ public class Client {
     public Client() {
     }
 
-    public Client(Integer id, String name) {
+    public Client(Integer id, String name, String cpf) {
         this.id = id;
         this.name = name;
+        this.cpf = cpf;
     }
 
     public Client(Object id, Object name) {
@@ -53,6 +56,14 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public Set<Order> getOrders() {
