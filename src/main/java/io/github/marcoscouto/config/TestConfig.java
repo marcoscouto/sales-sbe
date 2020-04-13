@@ -39,8 +39,13 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Client cli1 = new Client(null, "Marcos", "333");
-        Client cli2 = new Client(null, "João", "444");
+        Client cli1 = new Client();
+        cli1.setName("Marcos");
+        cli1.setCpf("333");
+
+        Client cli2 = new Client();
+        cli2.setName("João");
+        cli2.setCpf("444");
 
         clientRepository.saveAll(Arrays.asList(cli1, cli2));
 
@@ -58,21 +63,18 @@ public class TestConfig implements CommandLineRunner {
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 
-        Order o1 = new Order(null, cli1, LocalDate.now(), null);
-        Order o2 = new Order(null, cli2, LocalDate.now(), null);
+        Order o1 = new Order(null, cli1, Arrays.asList(oi1, oi3),  LocalDate.now(), null);
+        Order o2 = new Order(null, cli2, Arrays.asList(oi2, oi4), LocalDate.now(), null);
 
-        o1.getOrderItem().addAll(Arrays.asList(oi1, oi3));
         o1.setTotal(new BigDecimal(
-                o1.getOrderItem()
+                o1.getOrderItems()
                         .stream()
                         .mapToDouble(x -> x.getQuantity() * x.getProduct().getPrice().doubleValue())
                         .sum()
         ));
 
-
-        o2.getOrderItem().addAll(Arrays.asList(oi2, oi4));
         o2.setTotal(new BigDecimal(
-                o2.getOrderItem()
+                o2.getOrderItems()
                         .stream()
                         .mapToDouble(x -> x.getQuantity() * x.getProduct().getPrice().doubleValue())
                         .sum()

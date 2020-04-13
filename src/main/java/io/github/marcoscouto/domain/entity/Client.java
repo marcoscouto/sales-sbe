@@ -1,9 +1,7 @@
 package io.github.marcoscouto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,6 +28,9 @@ public class Client {
     //    @JsonIgnoreProperties("client")
     @JsonIgnore
     @OneToMany(mappedBy = "client")
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orders;
 
+    public Set<Order> getOrders() {
+        return orders == null ? new HashSet<>() : orders;
+    }
 }

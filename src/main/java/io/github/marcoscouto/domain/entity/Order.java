@@ -1,17 +1,12 @@
 package io.github.marcoscouto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -31,11 +26,14 @@ public class Order {
 
     @JsonIgnoreProperties("order")
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItem = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
     private LocalDate orderDate;
 
     @Column(scale = 2)
     private BigDecimal total;
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems == null ? new ArrayList<>() : orderItems;
+    }
 }
