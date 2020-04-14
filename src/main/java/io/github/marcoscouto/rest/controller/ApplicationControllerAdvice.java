@@ -1,6 +1,7 @@
 package io.github.marcoscouto.rest.controller;
 
 import io.github.marcoscouto.exception.BusinessRuleException;
+import io.github.marcoscouto.exception.OrderNotFoundException;
 import io.github.marcoscouto.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,4 +17,7 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(e.getMessage());
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleOrderNotFoundException(OrderNotFoundException e) {return new ApiErrors(e.getMessage());}
 }

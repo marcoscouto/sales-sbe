@@ -10,6 +10,7 @@ import io.github.marcoscouto.domain.repository.OrderItemRepository;
 import io.github.marcoscouto.domain.repository.OrderRepository;
 import io.github.marcoscouto.domain.repository.ProductRepository;
 import io.github.marcoscouto.exception.BusinessRuleException;
+import io.github.marcoscouto.exception.OrderNotFoundException;
 import io.github.marcoscouto.rest.dto.OrderDTO;
 import io.github.marcoscouto.rest.dto.OrderItemDTO;
 import io.github.marcoscouto.service.OrderService;
@@ -55,8 +56,19 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByIdFetchOrderItems(id);
     }
 
-    private List<OrderItem> saveItems(Order order, List<OrderItemDTO> items){
-        if(items.isEmpty()) throw new BusinessRuleException("Items list is empty");
+    @Override
+    @Transactional
+    public void updateStatus(Integer id, OrderStatus orderStatus) {
+        orderRepository
+                .findById(id)
+                .map(x -> {
+                    x.setStatus(orderStatus);
+                    return orderRepository.save(x);
+                }).orElseThrow(() -> new OrderNotFoundException());
+    }
+
+    private List<OrderItem> saveItems(Order order, List<OrderItemDTO> items) {
+        if (items.isEmpty()) throw new BusinessRuleException("Items list is empty");
         return items
                 .stream()
                 .map(orderItemDTO -> {
