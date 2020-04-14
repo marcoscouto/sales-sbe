@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .withUser("Marcos")
                 .password(passwordEncoder().encode("123"))
-                .roles("USER");
+                .roles("USER", "ADMIN");
     }
 
     @Override // Authorization
@@ -30,9 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("api/clients/**")
-                        .authenticated()
+                    .antMatchers("/api/clients/**")
+                        .hasAnyRole("USER", "ADMIN")
+                    .antMatchers("/api/products/**")
+                        .hasRole("ADMIN")
+                    .antMatchers("/api/orders/**")
+                        .hasAnyRole("USER", "ADMIN")
                 .and()
-                    .formLogin();
+                    .httpBasic();
     }
 }
