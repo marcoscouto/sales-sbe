@@ -1,5 +1,6 @@
 package io.github.marcoscouto.rest.dto;
 
+import io.github.marcoscouto.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class OrderDTO {
     @NotNull(message = "Total is required")
     private BigDecimal total;
 
-    
+    @NotEmptyList(message = "Order not be realized without items")
     private List<OrderItemDTO> items;
 
 
