@@ -23,11 +23,11 @@ public class Client {
     private Integer id;
 
     @Column(name = "name", length = 100)
-    @NotEmpty(message = "Name is required")
+    @NotEmpty(message = "{field.name.required}")
     private String name;
 
-    @NotEmpty(message = "CPF is required")
-    @CPF(message = "CPF must be valid")
+    @NotEmpty(message = "{field.cpf.required}")
+    @CPF(message = "{field.cpf.invalid}")
     private String cpf;
 
     //    @JsonIgnoreProperties("client")

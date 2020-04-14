@@ -21,11 +21,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "Description is required")
+    @NotEmpty(message = "{field.description.required}")
     private String description;
 
     @Column(scale = 2)
-    @NotNull(message = "Price is required")
+    @NotNull(message = "{field.price.required}")
     private BigDecimal price;
 
 }
