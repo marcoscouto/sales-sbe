@@ -42,11 +42,11 @@ public class TestConfig implements CommandLineRunner {
 
         Client cli1 = new Client();
         cli1.setName("Marcos");
-        cli1.setCpf("333");
+        cli1.setCpf("91168423082");
 
         Client cli2 = new Client();
         cli2.setName("João");
-        cli2.setCpf("444");
+        cli2.setCpf("28340438093");
 
         clientRepository.saveAll(Arrays.asList(cli1, cli2));
 
