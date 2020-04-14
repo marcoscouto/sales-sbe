@@ -1,5 +1,6 @@
 package io.github.marcoscouto.rest.dto;
 
+import io.github.marcoscouto.domain.entity.enums.OrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ public class OrderInformationDTO {
     private String cpf;
     private BigDecimal total;
     private String orderData;
+    private String status;
     private List<OrderItemInformationDTO> items;
 
 }

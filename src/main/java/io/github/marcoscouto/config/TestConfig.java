@@ -4,6 +4,7 @@ import io.github.marcoscouto.domain.entity.Client;
 import io.github.marcoscouto.domain.entity.Order;
 import io.github.marcoscouto.domain.entity.OrderItem;
 import io.github.marcoscouto.domain.entity.Product;
+import io.github.marcoscouto.domain.entity.enums.OrderStatus;
 import io.github.marcoscouto.domain.repository.ClientRepository;
 import io.github.marcoscouto.domain.repository.OrderItemRepository;
 import io.github.marcoscouto.domain.repository.OrderRepository;
@@ -63,8 +64,8 @@ public class TestConfig implements CommandLineRunner {
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 
-        Order o1 = new Order(null, cli1, Arrays.asList(oi1, oi3),  LocalDate.now(), null);
-        Order o2 = new Order(null, cli2, Arrays.asList(oi2, oi4), LocalDate.now(), null);
+        Order o1 = new Order(null, cli1, Arrays.asList(oi1, oi3),  LocalDate.now(), null, OrderStatus.REALIZED);
+        Order o2 = new Order(null, cli2, Arrays.asList(oi2, oi4), LocalDate.now(), null, OrderStatus.REALIZED);
 
         o1.setTotal(new BigDecimal(
                 o1.getOrderItems()

@@ -4,6 +4,7 @@ import io.github.marcoscouto.domain.entity.Client;
 import io.github.marcoscouto.domain.entity.Order;
 import io.github.marcoscouto.domain.entity.OrderItem;
 import io.github.marcoscouto.domain.entity.Product;
+import io.github.marcoscouto.domain.entity.enums.OrderStatus;
 import io.github.marcoscouto.domain.repository.ClientRepository;
 import io.github.marcoscouto.domain.repository.OrderItemRepository;
 import io.github.marcoscouto.domain.repository.OrderRepository;
@@ -41,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(orderDTO.getTotal());
         order.setOrderDate(LocalDate.now());
         order.setClient(client);
+        order.setStatus(OrderStatus.REALIZED);
         List<OrderItem> items = saveItems(order, orderDTO.getItems());
         orderRepository.save(order);
         orderItemRepository.saveAll(items);

@@ -1,6 +1,7 @@
 package io.github.marcoscouto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.github.marcoscouto.domain.entity.enums.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,9 @@ public class Order {
 
     @Column(scale = 2)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     public List<OrderItem> getOrderItems() {
         return orderItems == null ? new ArrayList<>() : orderItems;
