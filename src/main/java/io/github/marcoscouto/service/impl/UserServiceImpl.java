@@ -2,6 +2,7 @@ package io.github.marcoscouto.service.impl;
 
 import io.github.marcoscouto.domain.entity.User;
 import io.github.marcoscouto.domain.repository.UserRepository;
+import io.github.marcoscouto.exception.PasswordInvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,5 +40,12 @@ public class UserServiceImpl implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(roles)
                 .build();
+    }
+
+    public UserDetails authentication(User user){
+        UserDetails userDetails = loadUserByUsername(user.getUsername());
+        boolean passwordMatch = passwordEncoder.matches(user.getPassword(), userDetails.getPassword());
+        if(passwordMatch) return userDetails;
+        throw new PasswordInvalidException();
     }
 }
