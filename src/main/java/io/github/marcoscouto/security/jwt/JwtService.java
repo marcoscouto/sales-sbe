@@ -1,4 +1,4 @@
-package io.github.marcoscouto;
+package io.github.marcoscouto.security.jwt;
 
 import io.github.marcoscouto.domain.entity.User;
 import io.jsonwebtoken.Claims;
