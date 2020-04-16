@@ -2,6 +2,7 @@ package io.github.marcoscouto.rest.controller;
 
 import io.github.marcoscouto.domain.entity.Client;
 import io.github.marcoscouto.domain.repository.ClientRepository;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -15,19 +16,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
+@Api("Api Clientes")
 public class ClientController {
 
     @Autowired
     ClientRepository clientRepository;
 
     @GetMapping("/{id}")
-    public Client findById(@PathVariable Integer id) {
+    @ApiOperation("Obter detalhes do cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado para o id informado")
+    })
+    public Client findById(@PathVariable @ApiParam("Id do cliente") Integer id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiOperation("Salva novo cliente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Cliente salvo com sucesso"),
+            @ApiResponse(code = 400, message = "Erro de validação")
+    })
     public Client save(@RequestBody @Valid Client client) {
         return clientRepository.save(client);
     }
